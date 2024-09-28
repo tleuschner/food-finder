@@ -1,8 +1,12 @@
-const API_KEY = 'YOUR_GOOGLE_PLACES_API_KEY';
-const BASE_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+const BASE_URL = 'https://overpass-api.de/api/interpreter';
 
 export async function getNearbyRestaurants(latitude: number, longitude: number, radius: number = 1500) {
-    const url = `${BASE_URL}?location=${latitude},${longitude}&radius=${radius}&type=restaurant&key=${API_KEY}`;
+    const query = `
+        [out:json];
+        node["amenity"="restaurant"](around:${radius},${latitude},${longitude});
+        out;
+    `;
+    const url = `${BASE_URL}?data=${encodeURIComponent(query)}`;
 
     try {
         const response = await fetch(url);
