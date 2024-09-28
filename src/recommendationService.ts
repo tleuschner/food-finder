@@ -1,4 +1,3 @@
-import ml5 from "ml5";
 import { Restaurants } from "./types/Restaurants";
 
 export async function recommendRestaurant(
