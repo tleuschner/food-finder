@@ -158,7 +158,9 @@ function App() {
                     <button
                       key={mood.value}
                       onClick={() => handleMoodSelect(mood.value)}
-                      className={`mood-card ${selectedMood === mood.value ? "selected" : ""}`}
+                      className={`mood-card ${
+                        selectedMood === mood.value ? "selected" : ""
+                      }`}
                       disabled={loading}
                     >
                       {mood.label}
@@ -171,8 +173,8 @@ function App() {
                   <div>
                     <h2>Empfohlenes Restaurant:</h2>
                     <div className="restaurant-cards">
-                      <a
-                        href={`https://www.google.com/maps/dir/?api=1&origin=${location?.latitude},${location?.longitude}&destination=${recommendedRestaurant.lat},${recommendedRestaurant.lon}`}
+                      <Link
+                        to={`https://www.google.com/maps/dir/?api=1&origin=${location?.latitude},${location?.longitude}&destination=${recommendedRestaurant.lat},${recommendedRestaurant.lon}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="restaurant-card"
