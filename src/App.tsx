@@ -44,13 +44,15 @@ function App() {
             location.latitude,
             location.longitude
           );
-          console.log({ nearbyRestaurants });
           const filteredRestaurants = nearbyRestaurants.filter((restaurant) => {
             const { tags } = restaurant;
             if (dietaryRestrictions.vegan && tags["diet:vegan"] !== "yes") {
               return false;
             }
-            if (dietaryRestrictions.vegetarian && tags["diet:vegetarian"] !== "yes") {
+            if (
+              dietaryRestrictions.vegetarian &&
+              tags["diet:vegetarian"] !== "yes"
+            ) {
               return false;
             }
             return true;
