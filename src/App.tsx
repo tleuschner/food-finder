@@ -6,6 +6,11 @@ import "./App.css";
 
 function App() {
   const [count, setCount] = useState(0);
+  const [dietaryRestrictions, setDietaryRestrictions] = useState({
+    vegan: false,
+    vegetarian: false,
+  });
+
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -23,6 +28,14 @@ function App() {
 
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
+  const handleDietaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = event.target;
+    setDietaryRestrictions((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+  };
+
   useEffect(() => {
     if (location) {
       const fetchRestaurants = async () => {
@@ -32,7 +45,17 @@ function App() {
             location.longitude
           );
           console.log({ nearbyRestaurants });
-          setRestaurants(nearbyRestaurants);
+          const filteredRestaurants = nearbyRestaurants.filter((restaurant) => {
+            const { tags } = restaurant;
+            if (dietaryRestrictions.vegan && tags["diet:vegan"] !== "yes") {
+              return false;
+            }
+            if (dietaryRestrictions.vegetarian && tags["diet:vegetarian"] !== "yes") {
+              return false;
+            }
+            return true;
+          });
+          setRestaurants(filteredRestaurants);
         } catch (error) {
           console.error("Error fetching restaurants:", error);
         }
@@ -69,7 +92,27 @@ function App() {
             <p>
               Latitude: {location.latitude}, Longitude: {location.longitude}
             </p>
-            <h2>Nearby Restaurants:</h2>
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  name="vegan"
+                  checked={dietaryRestrictions.vegan}
+                  onChange={handleDietaryChange}
+                />
+                Vegan
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="vegetarian"
+                  checked={dietaryRestrictions.vegetarian}
+                  onChange={handleDietaryChange}
+                />
+                Vegetarian
+              </label>
+            </div>
+            <h2>Nearby Restaurants (Filtered):</h2>
             <ul>
               {restaurants.map((restaurant) => (
                 <li key={restaurant.id}>
