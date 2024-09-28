@@ -11,7 +11,7 @@ interface MapViewProps {
 const MapView: React.FC<MapViewProps> = ({ restaurants, location }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const restaurant = restaurants.find((r) => r.id === parseInt(id));
+  const restaurant = restaurants.find((r) => r.id === parseInt(id || "0"));
 
   React.useEffect(() => {
     if (!restaurant || !location) {
