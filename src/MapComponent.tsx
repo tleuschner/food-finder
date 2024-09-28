@@ -1,5 +1,7 @@
 import React from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import L from "leaflet";
+import "leaflet-routing-machine";
 
 interface MapComponentProps {
   startPoint: { lat: number; lng: number };
@@ -10,6 +12,24 @@ const MapComponent: React.FC<MapComponentProps> = ({
   startPoint,
   endPoint,
 }) => {
+  const map = useMap();
+
+  React.useEffect(() => {
+    if (!map) return;
+
+    const routingControl = L.Routing.control({
+      waypoints: [
+        L.latLng(startPoint.lat, startPoint.lng),
+        L.latLng(endPoint.lat, endPoint.lng),
+      ],
+      routeWhileDragging: true,
+    }).addTo(map);
+
+    return () => {
+      map.removeControl(routingControl);
+    };
+  }, [map, startPoint, endPoint]);
+
   return (
     <MapContainer
       center={startPoint}
