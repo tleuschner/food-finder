@@ -15,7 +15,8 @@ function App() {
   ];
 
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const [recommendedRestaurant, setRecommendedRestaurant] = useState<Restaurants | null>(null);
+  const [recommendedRestaurant, setRecommendedRestaurant] =
+    useState<Restaurants | null>(null);
   const [dietaryRestrictions, setDietaryRestrictions] = useState({
     vegan: false,
     vegetarian: false,
@@ -36,43 +37,6 @@ function App() {
     }));
   };
 
-  useEffect(() => {
-    if (location) {
-      const fetchRestaurants = async () => {
-        try {
-          const nearbyRestaurants = await getNearbyRestaurants(
-            location.latitude,
-            location.longitude
-          );
-          const filteredRestaurants = nearbyRestaurants.filter((restaurant) => {
-            const { tags } = restaurant;
-            if (dietaryRestrictions.vegan && tags["diet:vegan"] !== "yes") {
-              return false;
-            }
-            if (
-              dietaryRestrictions.vegetarian &&
-              tags["diet:vegetarian"] !== "yes"
-            ) {
-              return false;
-            }
-            return true;
-          });
-          if (mood) {
-            const recommendedRestaurant = await recommendRestaurant(
-              filteredRestaurants,
-              mood
-            );
-            setRecommendedRestaurant(recommendedRestaurant);
-          }
-        } catch (error) {
-          console.error("Error fetching restaurants:", error);
-        }
-      };
-
-      fetchRestaurants();
-    }
-  }, [location, dietaryRestrictions]);
-
   const requestLocation = async (mood: string) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -87,7 +51,7 @@ function App() {
               restaurants,
               mood
             );
-            alert(JSON.stringify(recommendedRestaurant));
+
             if (recommendedRestaurant) {
               // Navigate to the map view with the recommended restaurant
               window.location.href = `/map/${recommendedRestaurant.id}`;
@@ -160,16 +124,19 @@ function App() {
                         className="restaurant-card"
                       >
                         <h3>
-                          {recommendedRestaurant.tags.name || "Unnamed Restaurant"}
+                          {recommendedRestaurant.tags.name ||
+                            "Unnamed Restaurant"}
                         </h3>
                         <p>
-                          {recommendedRestaurant.tags.cuisine || "Cuisine not specified"}
+                          {recommendedRestaurant.tags.cuisine ||
+                            "Cuisine not specified"}
                         </p>
                         <p>
                           {recommendedRestaurant.tags["diet:vegan"] === "yes"
                             ? "Vegan"
                             : ""}
-                          {recommendedRestaurant.tags["diet:vegetarian"] === "yes"
+                          {recommendedRestaurant.tags["diet:vegetarian"] ===
+                          "yes"
                             ? "Vegetarian"
                             : ""}
                         </p>
