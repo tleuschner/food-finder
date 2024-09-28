@@ -171,8 +171,10 @@ function App() {
                   <div>
                     <h2>Empfohlenes Restaurant:</h2>
                     <div className="restaurant-cards">
-                      <Link
-                        to={`/map/${recommendedRestaurant.id}`}
+                      <a
+                        href={`https://www.google.com/maps/dir/?api=1&origin=${location?.latitude},${location?.longitude}&destination=${recommendedRestaurant.lat},${recommendedRestaurant.lon}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="restaurant-card"
                       >
                         <h3>
