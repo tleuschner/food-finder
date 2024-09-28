@@ -11,7 +11,17 @@ function App() {
     longitude: number;
   } | null>(null);
 
-  const [restaurants, setRestaurants] = useState<any[]>([]);
+  interface Restaurant {
+    id: number;
+    lat: number;
+    lon: number;
+    tags: {
+      name?: string;
+      [key: string]: any;
+    };
+  }
+
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
   useEffect(() => {
     if (location) {
@@ -78,8 +88,8 @@ function App() {
             </p>
             <h2>Nearby Restaurants:</h2>
             <ul>
-              {restaurants?.map((restaurant, index) => (
-                <li key={index}>
+              {restaurants.map((restaurant) => (
+                <li key={restaurant.id}>
                   {restaurant.tags.name || "Unnamed Restaurant"}
                 </li>
               ))}

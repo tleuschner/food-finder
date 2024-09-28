@@ -19,7 +19,7 @@ export async function getNearbyRestaurants(
     }
     const data = await response.json();
     console.log(data);
-    return data.results;
+    return data.elements;
   } catch (error) {
     console.error("Error fetching nearby restaurants:", error);
     throw error;
