@@ -167,37 +167,35 @@ function App() {
                     </button>
                   ))}
                 </div>
+                <h2>Empfohlenes Restaurant:</h2>
                 {loading ? (
                   <div className="spinner"></div>
                 ) : recommendedRestaurant ? (
-                  <div>
-                    <h2>Empfohlenes Restaurant:</h2>
-                    <div className="restaurant-cards">
-                      <Link
-                        to={`https://www.google.com/maps/dir/?api=1&origin=${location?.latitude},${location?.longitude}&destination=${recommendedRestaurant.lat},${recommendedRestaurant.lon}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="restaurant-card"
-                      >
-                        <h3>
-                          {recommendedRestaurant.tags.name ||
-                            "Unnamed Restaurant"}
-                        </h3>
-                        <p>
-                          {recommendedRestaurant.tags.cuisine ||
-                            "Cuisine not specified"}
-                        </p>
-                        <p>
-                          {recommendedRestaurant.tags["diet:vegan"] === "yes"
-                            ? "Vegan"
-                            : ""}
-                          {recommendedRestaurant.tags["diet:vegetarian"] ===
-                          "yes"
-                            ? "Vegetarian"
-                            : ""}
-                        </p>
-                      </Link>
-                    </div>
+                  <div className="restaurant-cards">
+                    <Link
+                      to={`https://www.google.com/maps/dir/?api=1&origin=${location?.latitude},${location?.longitude}&destination=${recommendedRestaurant.lat},${recommendedRestaurant.lon}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="restaurant-card"
+                    >
+                      <h3>
+                        {recommendedRestaurant.tags.name ||
+                          "Unnamed Restaurant"}
+                      </h3>
+                      <p>
+                        {recommendedRestaurant.tags.cuisine ||
+                          "Cuisine not specified"}
+                      </p>
+                      <p>
+                        {recommendedRestaurant.tags["diet:vegan"] === "yes"
+                          ? "Vegan"
+                          : ""}
+                        {recommendedRestaurant.tags["diet:vegetarian"] ===
+                        "yes"
+                          ? "Vegetarian"
+                          : ""}
+                      </p>
+                    </Link>
                   </div>
                 ) : (
                   <p>Loading location...</p>
