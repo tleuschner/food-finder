@@ -153,7 +153,6 @@ function App() {
             element={
               <div className="card">
                 <h2>Wählen Sie Ihre Stimmung:</h2>
-                {loading && <div className="spinner"></div>}
                 <div className="mood-cards">
                   {moods.map((mood) => (
                     <button
@@ -166,7 +165,9 @@ function App() {
                     </button>
                   ))}
                 </div>
-                {recommendedRestaurant ? (
+                {loading ? (
+                  <div className="spinner"></div>
+                ) : recommendedRestaurant ? (
                   <div>
                     <h2>Empfohlenes Restaurant:</h2>
                     <div className="restaurant-cards">
