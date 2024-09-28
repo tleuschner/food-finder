@@ -78,6 +78,7 @@
   box-sizing: border-box;
   transition: background-color 0.3s, color 0.3s;
   margin: 5px;
+  cursor: pointer;
 }
 
 .mood-card.selected {
