@@ -3,7 +3,6 @@ import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import { getNearbyRestaurants } from "./foodService";
 import { recommendRestaurant } from "./recommendationService";
-import MapView from "./MapView";
 import { Restaurants } from "./types/Restaurants";
 
 function App() {
@@ -202,10 +201,6 @@ function App() {
                 )}
               </div>
             }
-          />
-          <Route
-            path="/map/:id"
-            element={<MapView restaurants={restaurants} location={location} />}
           />
         </Routes>
       </>
