@@ -47,14 +47,64 @@ function App() {
     }));
   };
 
+  const calculateDistance = (
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ) => {
+    const R = 6371e3; // metres
+    const φ1 = (lat1 * Math.PI) / 180;
+    const φ2 = (lat2 * Math.PI) / 180;
+    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+    const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c; // in metres
+  };
+
   const requestLocation = async (mood: string) => {
+    const currentLocation = await new Promise<GeolocationPosition>(
+      (resolve, reject) => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        } else {
+          reject(new Error("Geolocation is not supported by this browser."));
+        }
+      }
+    );
+
+    const newLocation = {
+      latitude: currentLocation.coords.latitude,
+      longitude: currentLocation.coords.longitude,
+    };
+
+    if (
+      location &&
+      calculateDistance(
+        location.latitude,
+        location.longitude,
+        newLocation.latitude,
+        newLocation.longitude
+      ) < 500 &&
+      restaurants.length > 0
+    ) {
+      // If the location hasn't changed significantly and restaurants are already fetched
+      const recommendedRestaurant = await recommendRestaurant(
+        restaurants,
+        mood
+      );
+      setRecommendedRestaurant(recommendedRestaurant);
+      return;
+    }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
+          setLocation(newLocation);
           try {
             const nearbyRestaurants = await getNearbyRestaurants(
               position.coords.latitude,
