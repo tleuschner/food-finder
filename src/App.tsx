@@ -105,13 +105,18 @@ function App() {
               </label>
             </div>
             <h2>Nearby Restaurants (Filtered):</h2>
-            <ul>
+            <div className="restaurant-cards">
               {restaurants.map((restaurant) => (
-                <li key={restaurant.id}>
-                  {restaurant.tags.name || "Unnamed Restaurant"}
-                </li>
+                <div key={restaurant.id} className="restaurant-card">
+                  <h3>{restaurant.tags.name || "Unnamed Restaurant"}</h3>
+                  <p>{restaurant.tags.cuisine || "Cuisine not specified"}</p>
+                  <p>
+                    {restaurant.tags["diet:vegan"] === "yes" ? "Vegan" : ""}
+                    {restaurant.tags["diet:vegetarian"] === "yes" ? "Vegetarian" : ""}
+                  </p>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         ) : (
           <p>Loading location...</p>
