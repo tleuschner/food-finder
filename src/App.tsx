@@ -60,8 +60,6 @@ function App() {
 
               if (recommendedRestaurant) {
                 setRecommendedRestaurant(recommendedRestaurant);
-                // Navigate to the map view with the recommended restaurant
-                window.location.href = `/map/${recommendedRestaurant.id}`;
               }
             }
           } catch (error) {
