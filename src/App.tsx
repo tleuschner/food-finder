@@ -3,6 +3,7 @@ import { getNearbyRestaurants } from "./foodService";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import MapComponent from "./MapComponent";
 import { Restaurants } from "./types/Restaurants";
 
 function App() {
@@ -104,6 +105,10 @@ function App() {
                 Vegetarian
               </label>
             </div>
+            <MapComponent
+              startPoint={{ lat: location.latitude, lng: location.longitude }}
+              endPoint={{ lat: location.latitude + 0.01, lng: location.longitude + 0.01 }}
+            />
             <h2>Nearby Restaurants (Filtered):</h2>
             <div className="restaurant-cards">
               {restaurants.map((restaurant) => (
