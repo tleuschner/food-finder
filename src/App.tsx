@@ -45,17 +45,27 @@ function App() {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });
-          if (mood) {
-            alert(mood);
-            const recommendedRestaurant = await recommendRestaurant(
-              restaurants,
-              mood
+          try {
+            const nearbyRestaurants = await getNearbyRestaurants(
+              position.coords.latitude,
+              position.coords.longitude
             );
+            setRestaurants(nearbyRestaurants);
 
-            if (recommendedRestaurant) {
-              // Navigate to the map view with the recommended restaurant
-              window.location.href = `/map/${recommendedRestaurant.id}`;
+            if (mood) {
+              const recommendedRestaurant = await recommendRestaurant(
+                nearbyRestaurants,
+                mood
+              );
+
+              if (recommendedRestaurant) {
+                setRecommendedRestaurant(recommendedRestaurant);
+                // Navigate to the map view with the recommended restaurant
+                window.location.href = `/map/${recommendedRestaurant.id}`;
+              }
             }
+          } catch (error) {
+            console.error("Error fetching restaurants:", error);
           }
         },
         (error) => {
