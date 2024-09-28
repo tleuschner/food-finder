@@ -2,10 +2,19 @@ import { useEffect, useState } from "react";
 import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import { getNearbyRestaurants } from "./foodService";
+import { recommendRestaurant } from "./recommendationService";
 import MapView from "./MapView";
 import { Restaurants } from "./types/Restaurants";
 
 function App() {
+  const moods = [
+    { label: "Glücklich", value: "happy" },
+    { label: "Traurig", value: "sad" },
+    { label: "Aufgeregt", value: "excited" },
+    { label: "Entspannt", value: "relaxed" },
+  ];
+
+  const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [dietaryRestrictions, setDietaryRestrictions] = useState({
     vegan: false,
     vegetarian: false,
@@ -57,7 +66,7 @@ function App() {
     }
   }, [location, dietaryRestrictions]);
 
-  const requestLocation = () => {
+  const requestLocation = async (mood: string) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -65,7 +74,16 @@ function App() {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });
-        },
+          if (mood) {
+            const recommendedRestaurant = await recommendRestaurant(
+              filteredRestaurants,
+              mood
+            );
+            if (recommendedRestaurant) {
+              // Navigate to the map view with the recommended restaurant
+              window.location.href = `/map/${recommendedRestaurant.id}`;
+            }
+          }
         (error) => {
           console.error("Error obtaining location", error);
         }
@@ -75,7 +93,10 @@ function App() {
     }
   };
 
-  return (
+  const handleMoodSelect = (mood: string) => {
+    setSelectedMood(mood);
+    requestLocation(mood);
+  };
     <Router>
       <>
         <Routes>
@@ -83,7 +104,18 @@ function App() {
             path="/"
             element={
               <div className="card">
-                <button onClick={requestLocation}>Request Location</button>
+                <h2>Wählen Sie Ihre Stimmung:</h2>
+                <div className="mood-cards">
+                  {moods.map((mood) => (
+                    <button
+                      key={mood.value}
+                      onClick={() => handleMoodSelect(mood.value)}
+                      className="mood-card"
+                    >
+                      {mood.label}
+                    </button>
+                  ))}
+                </div>
                 {location ? (
                   <div>
                     <p>
