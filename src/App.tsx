@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getNearbyRestaurants } from "./foodService";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -10,7 +11,25 @@ function App() {
     longitude: number;
   } | null>(null);
 
-  const requestLocation = () => {
+  const [restaurants, setRestaurants] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (location) {
+      const fetchRestaurants = async () => {
+        try {
+          const nearbyRestaurants = await getNearbyRestaurants(
+            location.latitude,
+            location.longitude
+          );
+          setRestaurants(nearbyRestaurants);
+        } catch (error) {
+          console.error("Error fetching restaurants:", error);
+        }
+      };
+
+      fetchRestaurants();
+    }
+  }, [location]);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -49,10 +68,22 @@ function App() {
       </div>
       <div className="card">
         <button onClick={requestLocation}>Request Location</button>
-        {location && (
-          <p>
-            Latitude: {location.latitude}, Longitude: {location.longitude}
-          </p>
+        {location ? (
+          <div>
+            <p>
+              Latitude: {location.latitude}, Longitude: {location.longitude}
+            </p>
+            <h2>Nearby Restaurants:</h2>
+            <ul>
+              {restaurants.map((restaurant, index) => (
+                <li key={index}>
+                  {restaurant.tags.name || "Unnamed Restaurant"}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p>Loading location...</p>
         )}
       </div>
       <p>Click on the Vite and React logos to learn more</p>
