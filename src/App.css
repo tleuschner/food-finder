@@ -79,6 +79,10 @@
   margin: 5px;
 }
 
+.mood-card.selected {
+  border: 2px solid #09f;
+}
+
 @media (prefers-color-scheme: dark) {
   .restaurant-card,
   .mood-card {

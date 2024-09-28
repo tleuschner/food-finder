@@ -159,7 +159,7 @@ function App() {
                     <button
                       key={mood.value}
                       onClick={() => handleMoodSelect(mood.value)}
-                      className="mood-card"
+                      className={`mood-card ${selectedMood === mood.value ? "selected" : ""}`}
                       disabled={loading}
                     >
                       {mood.label}
