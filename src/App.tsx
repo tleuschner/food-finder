@@ -111,31 +111,7 @@ function App() {
                 </div>
                 {recommendedRestaurant ? (
                   <div>
-                    <p>
-                      Latitude: {location.latitude}, Longitude:{" "}
-                      {location.longitude}
-                    </p>
-                    <div>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="vegan"
-                          checked={dietaryRestrictions.vegan}
-                          onChange={handleDietaryChange}
-                        />
-                        Vegan
-                      </label>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="vegetarian"
-                          checked={dietaryRestrictions.vegetarian}
-                          onChange={handleDietaryChange}
-                        />
-                        Vegetarian
-                      </label>
-                    </div>
-                    <h2>Nearby Restaurants (Filtered):</h2>
+                    <h2>Empfohlenes Restaurant:</h2>
                     <div className="restaurant-cards">
                       <Link
                         to={`/map/${recommendedRestaurant.id}`}
