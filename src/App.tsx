@@ -27,6 +27,7 @@ function App() {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [recommendedRestaurant, setRecommendedRestaurant] =
     useState<Restaurants | null>(null);
+  const [loading, setLoading] = useState(false);
   const [dietaryRestrictions, setDietaryRestrictions] = useState({
     vegan: false,
     vegetarian: false,
@@ -99,6 +100,7 @@ function App() {
         mood
       );
       setRecommendedRestaurant(recommendedRestaurant);
+      setLoading(false);
       return;
     }
     if (navigator.geolocation) {
@@ -122,7 +124,9 @@ function App() {
                 setRecommendedRestaurant(recommendedRestaurant);
               }
             }
+            setLoading(false);
           } catch (error) {
+            setLoading(false);
             console.error("Error fetching restaurants:", error);
           }
         },
@@ -136,6 +140,7 @@ function App() {
   };
 
   const handleMoodSelect = (mood: string) => {
+    setLoading(true);
     setSelectedMood(mood);
     requestLocation(mood);
   };
@@ -148,12 +153,14 @@ function App() {
             element={
               <div className="card">
                 <h2>Wählen Sie Ihre Stimmung:</h2>
+                {loading && <div className="spinner"></div>}
                 <div className="mood-cards">
                   {moods.map((mood) => (
                     <button
                       key={mood.value}
                       onClick={() => handleMoodSelect(mood.value)}
                       className="mood-card"
+                      disabled={loading}
                     >
                       {mood.label}
                     </button>
