@@ -15,6 +15,7 @@ function App() {
   ];
 
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
+  const [recommendedRestaurant, setRecommendedRestaurant] = useState<Restaurants | null>(null);
   const [dietaryRestrictions, setDietaryRestrictions] = useState({
     vegan: false,
     vegetarian: false,
@@ -56,7 +57,13 @@ function App() {
             }
             return true;
           });
-          setRestaurants(filteredRestaurants);
+          if (mood) {
+            const recommendedRestaurant = await recommendRestaurant(
+              filteredRestaurants,
+              mood
+            );
+            setRecommendedRestaurant(recommendedRestaurant);
+          }
         } catch (error) {
           console.error("Error fetching restaurants:", error);
         }
@@ -120,7 +127,7 @@ function App() {
                     </button>
                   ))}
                 </div>
-                {location ? (
+                {recommendedRestaurant ? (
                   <div>
                     <p>
                       Latitude: {location.latitude}, Longitude:{" "}
@@ -148,28 +155,25 @@ function App() {
                     </div>
                     <h2>Nearby Restaurants (Filtered):</h2>
                     <div className="restaurant-cards">
-                      {restaurants.map((restaurant) => (
-                        <Link
-                          key={restaurant.id}
-                          to={`/map/${restaurant.id}`}
-                          className="restaurant-card"
-                        >
-                          <h3>
-                            {restaurant.tags.name || "Unnamed Restaurant"}
-                          </h3>
-                          <p>
-                            {restaurant.tags.cuisine || "Cuisine not specified"}
-                          </p>
-                          <p>
-                            {restaurant.tags["diet:vegan"] === "yes"
-                              ? "Vegan"
-                              : ""}
-                            {restaurant.tags["diet:vegetarian"] === "yes"
-                              ? "Vegetarian"
-                              : ""}
-                          </p>
-                        </Link>
-                      ))}
+                      <Link
+                        to={`/map/${recommendedRestaurant.id}`}
+                        className="restaurant-card"
+                      >
+                        <h3>
+                          {recommendedRestaurant.tags.name || "Unnamed Restaurant"}
+                        </h3>
+                        <p>
+                          {recommendedRestaurant.tags.cuisine || "Cuisine not specified"}
+                        </p>
+                        <p>
+                          {recommendedRestaurant.tags["diet:vegan"] === "yes"
+                            ? "Vegan"
+                            : ""}
+                          {recommendedRestaurant.tags["diet:vegetarian"] === "yes"
+                            ? "Vegetarian"
+                            : ""}
+                        </p>
+                      </Link>
                     </div>
                   </div>
                 ) : (
