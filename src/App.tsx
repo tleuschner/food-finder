@@ -12,6 +12,16 @@ function App() {
     { label: "Traurig", value: "sad" },
     { label: "Aufgeregt", value: "excited" },
     { label: "Entspannt", value: "relaxed" },
+    { label: "Wütend", value: "angry" },
+    { label: "Verwirrt", value: "confused" },
+    { label: "Erschöpft", value: "exhausted" },
+    { label: "Zufrieden", value: "content" },
+    { label: "Gestresst", value: "stressed" },
+    { label: "Neugierig", value: "curious" },
+    { label: "Nostalgisch", value: "nostalgic" },
+    { label: "Motiviert", value: "motivated" },
+    { label: "Gelassen", value: "calm" },
+    { label: "Überrascht", value: "surprised" },
   ];
 
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
