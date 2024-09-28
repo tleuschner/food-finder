@@ -79,123 +79,125 @@ function App() {
     <Router>
       <>
         <Routes>
-          <Route path="/" element={
-            <div className="card">
-              <button onClick={requestLocation}>Request Location</button>
-              {location ? (
-                <div>
-                  <p>
-                    Latitude: {location.latitude}, Longitude:{" "}
-                    {location.longitude}
-                  </p>
+          <Route
+            path="/"
+            element={
+              <div className="card">
+                <button onClick={requestLocation}>Request Location</button>
+                {location ? (
                   <div>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="vegan"
-                        checked={dietaryRestrictions.vegan}
-                        onChange={handleDietaryChange}
-                      />
-                      Vegan
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="vegetarian"
-                        checked={dietaryRestrictions.vegetarian}
-                        onChange={handleDietaryChange}
-                      />
-                      Vegetarian
-                    </label>
+                    <p>
+                      Latitude: {location.latitude}, Longitude:{" "}
+                      {location.longitude}
+                    </p>
+                    <div>
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="vegan"
+                          checked={dietaryRestrictions.vegan}
+                          onChange={handleDietaryChange}
+                        />
+                        Vegan
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="vegetarian"
+                          checked={dietaryRestrictions.vegetarian}
+                          onChange={handleDietaryChange}
+                        />
+                        Vegetarian
+                      </label>
+                    </div>
+                    <h2>Nearby Restaurants (Filtered):</h2>
+                    <div className="restaurant-cards">
+                      {restaurants.map((restaurant) => (
+                        <Link
+                          key={restaurant.id}
+                          to={`/map/${restaurant.id}`}
+                          className="restaurant-card"
+                        >
+                          <h3>
+                            {restaurant.tags.name || "Unnamed Restaurant"}
+                          </h3>
+                          <p>
+                            {restaurant.tags.cuisine || "Cuisine not specified"}
+                          </p>
+                          <p>
+                            {restaurant.tags["diet:vegan"] === "yes"
+                              ? "Vegan"
+                              : ""}
+                            {restaurant.tags["diet:vegetarian"] === "yes"
+                              ? "Vegetarian"
+                              : ""}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                  <h2>Nearby Restaurants (Filtered):</h2>
-                  <div className="restaurant-cards">
-                    {restaurants.map((restaurant) => (
-                      <Link
-                        key={restaurant.id}
-                        to={`/map/${restaurant.id}`}
-                        className="restaurant-card"
-                      >
-                        <h3>{restaurant.tags.name || "Unnamed Restaurant"}</h3>
-                        <p>
-                          {restaurant.tags.cuisine || "Cuisine not specified"}
-                        </p>
-                        <p>
-                          {restaurant.tags["diet:vegan"] === "yes"
-                            ? "Vegan"
-                            : ""}
-                          {restaurant.tags["diet:vegetarian"] === "yes"
-                            ? "Vegetarian"
-                            : ""}
-                        </p>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <p>Loading location...</p>
-              )}
-            </div>
-          } />
-            <div className="card">
-              <button onClick={requestLocation}>Request Location</button>
-              {location ? (
+                ) : (
+                  <p>Loading location...</p>
+                )}
+              </div>
+            }
+          />
+          <div className="card">
+            <button onClick={requestLocation}>Request Location</button>
+            {location ? (
+              <div>
+                <p>
+                  Latitude: {location.latitude}, Longitude: {location.longitude}
+                </p>
                 <div>
-                  <p>
-                    Latitude: {location.latitude}, Longitude:{" "}
-                    {location.longitude}
-                  </p>
-                  <div>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="vegan"
-                        checked={dietaryRestrictions.vegan}
-                        onChange={handleDietaryChange}
-                      />
-                      Vegan
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="vegetarian"
-                        checked={dietaryRestrictions.vegetarian}
-                        onChange={handleDietaryChange}
-                      />
-                      Vegetarian
-                    </label>
-                  </div>
-                  <h2>Nearby Restaurants (Filtered):</h2>
-                  <div className="restaurant-cards">
-                    {restaurants.map((restaurant) => (
-                      <Link
-                        key={restaurant.id}
-                        to={`/map/${restaurant.id}`}
-                        className="restaurant-card"
-                      >
-                        <h3>{restaurant.tags.name || "Unnamed Restaurant"}</h3>
-                        <p>
-                          {restaurant.tags.cuisine || "Cuisine not specified"}
-                        </p>
-                        <p>
-                          {restaurant.tags["diet:vegan"] === "yes"
-                            ? "Vegan"
-                            : ""}
-                          {restaurant.tags["diet:vegetarian"] === "yes"
-                            ? "Vegetarian"
-                            : ""}
-                        </p>
-                      </Link>
-                    ))}
-                  </div>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="vegan"
+                      checked={dietaryRestrictions.vegan}
+                      onChange={handleDietaryChange}
+                    />
+                    Vegan
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="vegetarian"
+                      checked={dietaryRestrictions.vegetarian}
+                      onChange={handleDietaryChange}
+                    />
+                    Vegetarian
+                  </label>
                 </div>
-              ) : (
-                <p>Loading location...</p>
-              )}
-            </div>
-          </Route>
-          <Route path="/map/:id" element={
-            ({ match }) => {
+                <h2>Nearby Restaurants (Filtered):</h2>
+                <div className="restaurant-cards">
+                  {restaurants.map((restaurant) => (
+                    <Link
+                      key={restaurant.id}
+                      to={`/map/${restaurant.id}`}
+                      className="restaurant-card"
+                    >
+                      <h3>{restaurant.tags.name || "Unnamed Restaurant"}</h3>
+                      <p>
+                        {restaurant.tags.cuisine || "Cuisine not specified"}
+                      </p>
+                      <p>
+                        {restaurant.tags["diet:vegan"] === "yes" ? "Vegan" : ""}
+                        {restaurant.tags["diet:vegetarian"] === "yes"
+                          ? "Vegetarian"
+                          : ""}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <p>Loading location...</p>
+            )}
+          </div>
+          <Route
+            path="/map/:id"
+            element={({ match }) => {
               const restaurant = restaurants.find(
                 (r) => r.id === parseInt(match.params.id)
               );
@@ -209,9 +211,9 @@ function App() {
                   endPoint={{ lat: restaurant.lat, lng: restaurant.lon }}
                 />
               );
-            }
-          } />
-        </Switch>
+            }}
+          />
+        </Routes>
       </>
     </Router>
   );
