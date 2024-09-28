@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Link, Route, BrowserRouter as Router, Routes, useParams } from "react-router-dom";
 import "./App.css";
 import { getNearbyRestaurants } from "./foodService";
+import MapView from "./MapView";
 import MapComponent from "./MapComponent";
 import { Restaurants } from "./types/Restaurants";
 
@@ -197,21 +198,7 @@ function App() {
           </div>
           <Route
             path="/map/:id"
-            element={({ match }) => {
-              const restaurant = restaurants.find(
-                (r) => r.id === parseInt(match.params.id)
-              );
-              if (!restaurant || !location) return <p>Loading...</p>;
-              return (
-                <MapComponent
-                  startPoint={{
-                    lat: location.latitude,
-                    lng: location.longitude,
-                  }}
-                  endPoint={{ lat: restaurant.lat, lng: restaurant.lon }}
-                />
-              );
-            }}
+            element={<MapView restaurants={restaurants} location={location} />}
           />
         </Routes>
       </>
