@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 const API_KEY = 'YOUR_GOOGLE_PLACES_API_KEY';
 const BASE_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 
