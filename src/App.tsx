@@ -65,7 +65,7 @@ function App() {
 
       fetchRestaurants();
     }
-  }, [location]);
+  }, [location, dietaryRestrictions]);
 
   const requestLocation = () => {
     if (navigator.geolocation) {
