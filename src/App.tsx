@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, Route, BrowserRouter as Router, Routes, useParams } from "react-router-dom";
+import {
+  Link,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  useParams,
+} from "react-router-dom";
 import "./App.css";
 import { getNearbyRestaurants } from "./foodService";
 import MapView from "./MapView";
