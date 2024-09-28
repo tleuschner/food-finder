@@ -21,6 +21,7 @@ function App() {
             location.latitude,
             location.longitude
           );
+          console.log({ nearbyRestaurants });
           setRestaurants(nearbyRestaurants);
         } catch (error) {
           console.error("Error fetching restaurants:", error);
@@ -30,6 +31,8 @@ function App() {
       fetchRestaurants();
     }
   }, [location]);
+
+  const requestLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -75,7 +78,7 @@ function App() {
             </p>
             <h2>Nearby Restaurants:</h2>
             <ul>
-              {restaurants.map((restaurant, index) => (
+              {restaurants?.map((restaurant, index) => (
                 <li key={index}>
                   {restaurant.tags.name || "Unnamed Restaurant"}
                 </li>
