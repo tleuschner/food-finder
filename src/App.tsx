@@ -3,9 +3,9 @@ import { getNearbyRestaurants } from "./foodService";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import { Restaurants } from "./types/Restaurants";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [dietaryRestrictions, setDietaryRestrictions] = useState({
     vegan: false,
     vegetarian: false,
@@ -16,17 +16,7 @@ function App() {
     longitude: number;
   } | null>(null);
 
-  interface Restaurant {
-    id: number;
-    lat: number;
-    lon: number;
-    tags: {
-      name?: string;
-      [key: string]: any;
-    };
-  }
-
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [restaurants, setRestaurants] = useState<Restaurants[]>([]);
 
   const handleDietaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
