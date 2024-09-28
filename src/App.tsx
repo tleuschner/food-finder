@@ -69,21 +69,24 @@ function App() {
   const requestLocation = async (mood: string) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
           setLocation({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });
           if (mood) {
+            alert(mood);
             const recommendedRestaurant = await recommendRestaurant(
-              filteredRestaurants,
+              restaurants,
               mood
             );
+            alert(JSON.stringify(recommendedRestaurant));
             if (recommendedRestaurant) {
               // Navigate to the map view with the recommended restaurant
               window.location.href = `/map/${recommendedRestaurant.id}`;
             }
           }
+        },
         (error) => {
           console.error("Error obtaining location", error);
         }
@@ -97,6 +100,7 @@ function App() {
     setSelectedMood(mood);
     requestLocation(mood);
   };
+  return (
     <Router>
       <>
         <Routes>
