@@ -27,10 +27,6 @@ function App() {
   const [recommendedRestaurant, setRecommendedRestaurant] =
     useState<Restaurant | null>(null);
   const [loading, setLoading] = useState(false);
-  const [dietaryRestrictions, setDietaryRestrictions] = useState({
-    vegan: false,
-    vegetarian: false,
-  });
 
   const [location, setLocation] = useState<{
     latitude: number;
@@ -38,14 +34,6 @@ function App() {
   } | null>(null);
 
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-
-  const handleDietaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
-    setDietaryRestrictions((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
-  };
 
   const calculateDistance = (
     lat1: number,
