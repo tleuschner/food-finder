@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import { getNearbyRestaurants } from "./foodService";
 import { recommendRestaurant } from "./recommendationService";
-import { Restaurants } from "./types/Restaurants";
+import { Restaurant } from "./types/Restaurants";
 
 function App() {
   const moods = [
@@ -25,7 +25,7 @@ function App() {
 
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [recommendedRestaurant, setRecommendedRestaurant] =
-    useState<Restaurants | null>(null);
+    useState<Restaurant | null>(null);
   const [loading, setLoading] = useState(false);
   const [dietaryRestrictions, setDietaryRestrictions] = useState({
     vegan: false,
@@ -37,7 +37,7 @@ function App() {
     longitude: number;
   } | null>(null);
 
-  const [restaurants, setRestaurants] = useState<Restaurants[]>([]);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
   const handleDietaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
@@ -151,7 +151,7 @@ function App() {
             path="/"
             element={
               <div className="card">
-                <h2>Wählen Sie Ihre Stimmung:</h2>
+                <h2>Wähle Deine Stimmung:</h2>
                 <div className="mood-cards">
                   {moods.map((mood) => (
                     <button
@@ -189,15 +189,14 @@ function App() {
                         {recommendedRestaurant.tags["diet:vegan"] === "yes"
                           ? "Vegan"
                           : ""}
-                        {recommendedRestaurant.tags["diet:vegetarian"] ===
-                        "yes"
+                        {recommendedRestaurant.tags["diet:vegetarian"] === "yes"
                           ? "Vegetarian"
                           : ""}
                       </p>
                     </Link>
                   </div>
                 ) : (
-                  <p>Loading location...</p>
+                  <p>Bitte Stimmung auswählen</p>
                 )}
               </div>
             }

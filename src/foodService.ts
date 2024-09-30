@@ -1,4 +1,4 @@
-import { Restaurants } from "./types/Restaurants";
+import { Restaurant } from "./types/Restaurants";
 
 const BASE_URL = "https://overpass-api.de/api/interpreter";
 
@@ -20,7 +20,7 @@ export async function getNearbyRestaurants(
       throw new Error(`Error fetching data: ${response.statusText}`);
     }
     const data = await response.json();
-    return data.elements as Restaurants[];
+    return data.elements as Restaurant[];
   } catch (error) {
     console.error("Error fetching nearby restaurants:", error);
     throw error;

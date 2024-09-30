@@ -1,20 +1,19 @@
-import ml5 from "ml5";
-import { Restaurants } from "./types/Restaurants";
+//@ts-nocheck
+import { Restaurant } from "./types/Restaurants";
 
 export async function recommendRestaurant(
-  restaurants: Restaurants[],
+  restaurants: Restaurant[],
   mood: string
-): Promise<Restaurants | null> {
-  return new Promise<Restaurants | null>((resolve, reject) => {
-    ml5.sentiment("movieReviews", (model) => {
-      const moodScore = model.predict(mood).score;
-
-      let bestMatch: Restaurants | null = null;
+): Promise<Restaurant | null> {
+  return new Promise<Restaurant | null>((resolve, reject) => {
+    ml5.sentiment("MovieReviews", async (model) => {
+      const { confidence: moodScore } = await model.predict(mood);
+      let bestMatch: Restaurant | null = null;
       let bestScoreDifference = Infinity;
 
       for (const restaurant of restaurants) {
         const cuisine = restaurant.tags.cuisine || "";
-        const cuisineScore = model.predict(cuisine).score;
+        const { confidence: cuisineScore } = await model.predict(cuisine);
         const scoreDifference = Math.abs(moodScore - cuisineScore);
 
         if (scoreDifference < bestScoreDifference) {
