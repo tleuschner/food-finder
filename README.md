@@ -7,8 +7,8 @@ This project is a restaurant recommendation application that suggests restaurant
 1. **Clone the repository:**
 
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone git@github.com:tleuschner/food-finder.git
+   cd food-finder
    ```
 
 2. **Install dependencies:**
@@ -28,10 +28,10 @@ This project is a restaurant recommendation application that suggests restaurant
 To start the development server, run:
 
 ```bash
-npm start
+npm run dev
 ```
 
-This will launch the application in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This will launch the application in development mode. Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 
 ## Note
 
