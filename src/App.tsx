@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import { getNearbyRestaurants } from "./foodService";
+import PrivacyPolicy from "./PrivacyPolicy";
 import { recommendRestaurant } from "./recommendationService";
 import { Restaurant } from "./types/Restaurants";
 
@@ -189,6 +190,9 @@ function App() {
                 ) : (
                   <p>Bitte Stimmung auswählen</p>
                 )}
+                <footer>
+                  <Link to="/datenschutz">Datenschutz</Link>
+                </footer>
               </div>
             }
           />
