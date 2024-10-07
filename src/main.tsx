@@ -3,15 +3,21 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import PrivacyPolicy from "./PrivacyPolicy";
 import "./index.css";
-import { Route, RouterProvider, Routes } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "/datenschutz",
+    element: <PrivacyPolicy />,
+  },
+]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/datenschutz" element={<PrivacyPolicy />} />
-      </Routes>
-    </RouterProvider>
+    <RouterProvider router={router} />
   </StrictMode>
 );
