@@ -70,7 +70,6 @@ function App() {
     const currentLocation = await new Promise<GeolocationPosition>(
       (resolve, reject) => {
         if (navigator.geolocation) {
-          console.log("Got navigator geolocation");
           navigator.geolocation.getCurrentPosition(resolve, reject);
         } else {
           reject(new Error("Geolocation is not supported by this browser."));
@@ -78,7 +77,6 @@ function App() {
       }
     );
 
-    console.log(currentLocation);
     const newLocation = {
       latitude: currentLocation.coords.latitude,
       longitude: currentLocation.coords.longitude,
@@ -94,7 +92,6 @@ function App() {
       ) < 500 &&
       restaurants.length > 0
     ) {
-      console.log("IM IF, nur recommender aufruf");
       // If the location hasn't changed significantly and restaurants are already fetched
       const recommendedRestaurant = await recommendRestaurant(
         restaurants,
@@ -136,69 +133,54 @@ function App() {
     requestLocation(mood);
   };
   return (
-    <Router>
-      <>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <div className="card">
-                <h2>Wähle Deine Stimmung:</h2>
-                <div className="mood-cards">
-                  {moods.map((mood) => (
-                    <button
-                      key={mood.value}
-                      onClick={() => handleMoodSelect(mood.value)}
-                      className={`mood-card ${
-                        selectedMood === mood.value ? "selected" : ""
-                      }`}
-                      disabled={loading}
-                    >
-                      {mood.label}
-                    </button>
-                  ))}
-                </div>
-                <h2>Empfohlenes Restaurant:</h2>
-                {loading ? (
-                  <div className="spinner"></div>
-                ) : recommendedRestaurant ? (
-                  <div className="restaurant-cards">
-                    <Link
-                      to={`https://www.google.com/maps/dir/?api=1&origin=${location?.latitude},${location?.longitude}&destination=${recommendedRestaurant.lat},${recommendedRestaurant.lon}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="restaurant-card"
-                    >
-                      <h3>
-                        {recommendedRestaurant.tags.name ||
-                          "Unnamed Restaurant"}
-                      </h3>
-                      <p>
-                        {recommendedRestaurant.tags.cuisine ||
-                          "Cuisine not specified"}
-                      </p>
-                      <p>
-                        {recommendedRestaurant.tags["diet:vegan"] === "yes"
-                          ? "Vegan"
-                          : ""}
-                        {recommendedRestaurant.tags["diet:vegetarian"] === "yes"
-                          ? "Vegetarian"
-                          : ""}
-                      </p>
-                    </Link>
-                  </div>
-                ) : (
-                  <p>Bitte Stimmung auswählen</p>
-                )}
-                <footer>
-                  <Link to="/datenschutz">Datenschutz</Link>
-                </footer>
-              </div>
-            }
-          />
-        </Routes>
-      </>
-    </Router>
+    <div className="card">
+      <h2>Wähle Deine Stimmung:</h2>
+      <div className="mood-cards">
+        {moods.map((mood) => (
+          <button
+            key={mood.value}
+            onClick={() => handleMoodSelect(mood.value)}
+            className={`mood-card ${
+              selectedMood === mood.value ? "selected" : ""
+            }`}
+            disabled={loading}
+          >
+            {mood.label}
+          </button>
+        ))}
+      </div>
+      <h2>Empfohlenes Restaurant:</h2>
+      {loading ? (
+        <div className="spinner"></div>
+      ) : recommendedRestaurant ? (
+        <div className="restaurant-cards">
+          <Link
+            to={`https://www.google.com/maps/dir/?api=1&origin=${location?.latitude},${location?.longitude}&destination=${recommendedRestaurant.lat},${recommendedRestaurant.lon}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="restaurant-card"
+          >
+            <h3>{recommendedRestaurant.tags.name || "Unnamed Restaurant"}</h3>
+            <p>
+              {recommendedRestaurant.tags.cuisine || "Cuisine not specified"}
+            </p>
+            <p>
+              {recommendedRestaurant.tags["diet:vegan"] === "yes"
+                ? "Vegan"
+                : ""}
+              {recommendedRestaurant.tags["diet:vegetarian"] === "yes"
+                ? "Vegetarian"
+                : ""}
+            </p>
+          </Link>
+        </div>
+      ) : (
+        <p>Bitte Stimmung auswählen</p>
+      )}
+      <footer>
+        <Link to="/datenschutz">Datenschutz</Link>
+      </footer>
+    </div>
   );
 }
 
