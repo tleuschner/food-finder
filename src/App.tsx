@@ -69,6 +69,7 @@ function App() {
     const currentLocation = await new Promise<GeolocationPosition>(
       (resolve, reject) => {
         if (navigator.geolocation) {
+          console.log("Got navigator geolocation");
           navigator.geolocation.getCurrentPosition(resolve, reject);
         } else {
           reject(new Error("Geolocation is not supported by this browser."));
@@ -76,6 +77,7 @@ function App() {
       }
     );
 
+    console.log(currentLocation);
     const newLocation = {
       latitude: currentLocation.coords.latitude,
       longitude: currentLocation.coords.longitude,
@@ -91,6 +93,7 @@ function App() {
       ) < 500 &&
       restaurants.length > 0
     ) {
+      console.log("IM IF, nur recommender aufruf");
       // If the location hasn't changed significantly and restaurants are already fetched
       const recommendedRestaurant = await recommendRestaurant(
         restaurants,
@@ -100,39 +103,29 @@ function App() {
       setLoading(false);
       return;
     }
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          setLocation(newLocation);
-          try {
-            const nearbyRestaurants = await getNearbyRestaurants(
-              position.coords.latitude,
-              position.coords.longitude
-            );
-            setRestaurants(nearbyRestaurants);
 
-            if (mood) {
-              const recommendedRestaurant = await recommendRestaurant(
-                nearbyRestaurants,
-                mood
-              );
-
-              if (recommendedRestaurant) {
-                setRecommendedRestaurant(recommendedRestaurant);
-              }
-            }
-            setLoading(false);
-          } catch (error) {
-            setLoading(false);
-            console.error("Error fetching restaurants:", error);
-          }
-        },
-        (error) => {
-          console.error("Error obtaining location", error);
-        }
+    setLocation(newLocation);
+    try {
+      const nearbyRestaurants = await getNearbyRestaurants(
+        currentLocation.coords.latitude,
+        currentLocation.coords.longitude
       );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
+      setRestaurants(nearbyRestaurants);
+
+      if (mood) {
+        const recommendedRestaurant = await recommendRestaurant(
+          nearbyRestaurants,
+          mood
+        );
+
+        if (recommendedRestaurant) {
+          setRecommendedRestaurant(recommendedRestaurant);
+        }
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching restaurants:", error);
     }
   };
 
